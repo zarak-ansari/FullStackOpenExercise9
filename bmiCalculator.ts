@@ -18,9 +18,12 @@ const calculateBmi = (heightInCentimeters: number, weightInKg: number): string =
     } else if (bmi >= 40) {
         return "Obese (Class III)"
     } else {
-        return "something went wrong"
+        return `Something went wrong: inputs: ${heightInCentimeters} - ${weightInKg}`
     }
 }
 
-console.log(calculateBmi(180, 74))
+const height: number = Number(process.argv[2])
+const weight: number = Number(process.argv[3])
+
+console.log(calculateBmi(height, weight))
 

@@ -8,22 +8,20 @@ interface exerciseCalculatorResult{
   average: number 
 }
 
-const calculateExercises = (dailyExerciseHours: number[]): exerciseCalculatorResult => {
+const calculateExercises = (target: number, dailyExerciseHours: number[]): exerciseCalculatorResult => {
     
-    const TARGET: number = 2
-
     const average: number = dailyExerciseHours.reduce((a,b) => a + b) / dailyExerciseHours.length
     
     let rating: number
     let ratingDescription: string
 
-    if(average < TARGET){
+    if(average < target){
         rating = 1
         ratingDescription = "Didn't achieve target"
-    } else if (average === TARGET) {
+    } else if (average === target) {
         rating = 2
         ratingDescription = "Met the target"
-    } else if (average > TARGET) {
+    } else if (average > target) {
         rating = 3
         ratingDescription = "Outperformed"
     }
@@ -31,12 +29,16 @@ const calculateExercises = (dailyExerciseHours: number[]): exerciseCalculatorRes
     return {
         periodLength: dailyExerciseHours.length,
         trainingDays: dailyExerciseHours.filter(hours => hours > 0).length,
-        success: average >= TARGET,
+        success: average >= target,
         rating,
         ratingDescription,
-        target: TARGET,
+        target,
         average 
     }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1]))
+const commandLineArguments = process.argv
+const target = Number(commandLineArguments[2])
+const dailyExerciseHours = commandLineArguments.slice(3).map(a => Number(a))
+
+console.log(calculateExercises(target, dailyExerciseHours))

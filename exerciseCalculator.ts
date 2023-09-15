@@ -24,6 +24,9 @@ const calculateExercises = (target: number, dailyExerciseHours: number[]): exerc
     } else if (average > target) {
         rating = 3
         ratingDescription = "Outperformed"
+    } else {
+        rating = -1
+        ratingDescription = "err"
     }
 
     return {
@@ -37,11 +40,11 @@ const calculateExercises = (target: number, dailyExerciseHours: number[]): exerc
     }
 }
 
-const parseArguments = (arguments: string[]) => {
-    if(arguments.length < 4) throw new Error("Not enough arguments")
+const parseArguments = (args: string[]) => {
+    if(args.length < 4) throw new Error("Not enough arguments")
 
 
-    const slicedArguments = arguments.slice(2).map(a => {
+    const slicedArguments = args.slice(2).map(a => {
         if(isNaN(Number(a))) throw new Error("Cannot pass in strings as arguments")
         return Number(a)
     })

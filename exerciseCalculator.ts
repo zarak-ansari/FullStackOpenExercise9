@@ -37,8 +37,29 @@ const calculateExercises = (target: number, dailyExerciseHours: number[]): exerc
     }
 }
 
-const commandLineArguments = process.argv
-const target = Number(commandLineArguments[2])
-const dailyExerciseHours = commandLineArguments.slice(3).map(a => Number(a))
+const parseArguments = (arguments: string[]) => {
+    if(arguments.length < 4) throw new Error("Not enough arguments")
 
-console.log(calculateExercises(target, dailyExerciseHours))
+
+    const slicedArguments = arguments.slice(2).map(a => {
+        if(isNaN(Number(a))) throw new Error("Cannot pass in strings as arguments")
+        return Number(a)
+    })
+
+    return ({
+        target: slicedArguments[3],
+        dailyExerciseHours: slicedArguments.slice(1)
+    })   
+}
+
+const commandLineArguments = process.argv
+try {
+    const { target, dailyExerciseHours } = parseArguments(process.argv)
+    console.log(calculateExercises(target, dailyExerciseHours))
+} catch (error) {
+    let errorMessage = "Something bad happened: "
+    if(error instanceof Error){
+        errorMessage += error.message
+    }
+    console.log(errorMessage)
+}

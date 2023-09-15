@@ -10,23 +10,23 @@ interface exerciseCalculatorResult{
 
 const calculateExercises = (target: number, dailyExerciseHours: number[]): exerciseCalculatorResult => {
     
-    const average: number = dailyExerciseHours.reduce((a,b) => a + b) / dailyExerciseHours.length
+    const average: number = dailyExerciseHours.reduce((a,b) => a + b) / dailyExerciseHours.length;
     
-    let rating: number
-    let ratingDescription: string
+    let rating: number;
+    let ratingDescription: string;
 
     if(average < target){
-        rating = 1
-        ratingDescription = "Didn't achieve target"
+        rating = 1;
+        ratingDescription = "Didn't achieve target";
     } else if (average === target) {
-        rating = 2
-        ratingDescription = "Met the target"
+        rating = 2;
+        ratingDescription = "Met the target";
     } else if (average > target) {
-        rating = 3
-        ratingDescription = "Outperformed"
+        rating = 3;
+        ratingDescription = "Outperformed";
     } else {
-        rating = -1
-        ratingDescription = "err"
+        rating = -1;
+        ratingDescription = "err";
     }
 
     return {
@@ -37,32 +37,31 @@ const calculateExercises = (target: number, dailyExerciseHours: number[]): exerc
         ratingDescription,
         target,
         average 
-    }
-}
+    };
+};
 
 const parseArguments = (args: string[]) => {
-    if(args.length < 4) throw new Error("Not enough arguments")
+    if(args.length < 4) throw new Error("Not enough arguments");
 
 
     const slicedArguments = args.slice(2).map(a => {
-        if(isNaN(Number(a))) throw new Error("Cannot pass in strings as arguments")
-        return Number(a)
-    })
+        if(isNaN(Number(a))) throw new Error("Cannot pass in strings as arguments");
+        return Number(a);
+    });
 
     return ({
         target: slicedArguments[3],
         dailyExerciseHours: slicedArguments.slice(1)
-    })   
-}
+    });   
+};
 
-const commandLineArguments = process.argv
 try {
-    const { target, dailyExerciseHours } = parseArguments(process.argv)
-    console.log(calculateExercises(target, dailyExerciseHours))
+    const { target, dailyExerciseHours } = parseArguments(process.argv);
+    console.log(calculateExercises(target, dailyExerciseHours));
 } catch (error) {
-    let errorMessage = "Something bad happened: "
+    let errorMessage = "Something bad happened: ";
     if(error instanceof Error){
-        errorMessage += error.message
+        errorMessage += error.message;
     }
-    console.log(errorMessage)
+    console.log(errorMessage);
 }

@@ -8,7 +8,7 @@ interface NewEntryFormProps {
 
 const NewEntryForm = (props: NewEntryFormProps) => {
 
-    console.log(JSON.stringify(props))
+    const [errorMessage, setErrorMessage] = useState(''); 
 
     const [date, setDate] = useState('');
     const [weather, setWeather] = useState('');
@@ -26,17 +26,25 @@ const NewEntryForm = (props: NewEntryFormProps) => {
         }
 
         createNewEntry(newEntryObj)
-            .then(data => props.appendEntry(data))
+            .then(data => {
+                if(data instanceof Object) {
+                    props.appendEntry(data);
+                    setDate('');
+                    setWeather('');
+                    setVisibility('');
+                    setComment('');
+                    setErrorMessage('');
+                } else {
+                    setErrorMessage(data);
+                }
+            });
         
-        setDate('');
-        setWeather('');
-        setVisibility('');
-        setComment('');
     }
 
     return (
         <div>
             <h2>Add New Diary Entry</h2>
+            {errorMessage && <p style={{color:"red"}}>{errorMessage}</p>}
             <form onSubmit={addNewEntry}>
                 <p>Date: <input value={date} onChange={e => setDate(e.target.value)} /></p>
                 <p>Weather: <input value={weather} onChange={e => setWeather(e.target.value)} /></p>

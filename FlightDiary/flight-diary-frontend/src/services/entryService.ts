@@ -9,14 +9,13 @@ export const getAllEntries = () => {
         .then(response => response.data);
 }
 
-export const createNewEntry = (object: NewDiaryEntry) => {
-    return axios
-            .post<DiaryEntry>(baseUrl, object)
-            .then(response => response.data)
+export const createNewEntry = async (object: NewDiaryEntry) => {
+    try{
+        const response = await axios.post<DiaryEntry>(baseUrl, object)
+        return response.data;
+    } catch(error){
+        if(axios.isAxiosError(error) && error.response){
+            return error.response.data;
+        }
+    }
 }
-
-// export const createNote = (object: NewNote) => {
-//     return axios
-//       .post<Note>(baseUrl, object)
-//       .then(response => response.data)
-//   }

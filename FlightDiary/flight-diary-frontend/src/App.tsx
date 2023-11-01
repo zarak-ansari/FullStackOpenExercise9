@@ -1,22 +1,19 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { DiaryEntry } from "./types";
-import Entry from "./components/Entry";
+import EntriesList from "./components/EntriesList";
+import { getAllEntries } from "./services/entryService";
 
 function App() {
 
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
-    axios.get<DiaryEntry[]>("http://localhost:3000/api/diaries/")
-      .then(response => setEntries(response.data));
+    getAllEntries().then(data => setEntries(data));
   }, [])
   
   return (
-    <ul>
-      {entries.map(entry => <Entry entry={entry}/>)}
-    </ul>
-  )
+    <EntriesList entries={entries}/>
+  );
 }
 
 export default App

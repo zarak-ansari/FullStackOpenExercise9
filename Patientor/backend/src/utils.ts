@@ -1,18 +1,18 @@
-import { Gender, NewPatient } from "./services/types";
+import { Entry, Gender, NewPatient } from "./types";
 
 export const toNewPatient = (object: unknown): NewPatient => {
     if(!object || typeof object !== 'object'){
         throw new Error('missing information');
     }
 
-    if('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object){
+    if('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object && 'entries' in object){
         const newPatient: NewPatient = {
             name: parseName(object.name),
             dateOfBirth: parseDateOfBirth(object.dateOfBirth),
             ssn: parseSsn(object.ssn),
             gender: parseGender(object.gender),
             occupation: parseOccupation(object.occupation),
-            entries: []
+            entries: parseEntries(object.entries)
         };
         return newPatient;
     } else {
@@ -53,6 +53,20 @@ const parseOccupation = (occupation: unknown): string => {
         throw new Error('missing or invalid occupation');
     }
     return occupation;
+};
+
+const parseEntries = (entries: unknown): Entry [] => {
+    if(!entries || !Array.isArray(entries)){
+        throw new Error('Missing entries');
+    }
+    const parsedEntries = entries.map(entry => {
+        if(typeof entry === 'object' && 'type' in entry && isString(entry.type)  && ['HealthCheck','Hospital','OccupationalHealthcare'].includes(String(entry.type))){
+            return entry as Entry;
+        } else {
+            throw new Error('Entry doesn\'t have a type');
+        }
+    });
+    return parsedEntries;
 };
 
 const isString = (text: unknown): text is string => {

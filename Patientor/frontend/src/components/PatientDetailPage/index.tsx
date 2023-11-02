@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import EntryComponent from "./EntryComponent";
 
 const PatientDetailPage = () => {
     const { id } = useParams();
@@ -40,6 +41,10 @@ const PatientDetailPage = () => {
             <Typography variant="body1">
                 Occupation: {patient.occupation}
             </Typography>
+            <Typography variant="h5">Entries</Typography>
+            <div>
+                {patient.entries.map(entry => <EntryComponent key={entry.id} entry={entry} /> )}
+            </div>
         </div>
     );
 
